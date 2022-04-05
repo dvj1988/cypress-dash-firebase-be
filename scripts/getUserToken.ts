@@ -1,20 +1,15 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
+import fs from "fs";
+import path from "path";
 
-// Your web app's Firebase configuration
-const firebaseConfig = {
-  apiKey: "AIzaSyDTbSRTRfR5RtMOxZbczkc_Ly6ri8kLon4",
-  authDomain: "cypress-dashboard-c11c7.firebaseapp.com",
-  projectId: "cypress-dashboard-c11c7",
-  storageBucket: "cypress-dashboard-c11c7.appspot.com",
-  messagingSenderId: "542871787691",
-  appId: "1:542871787691:web:0aba70e352b132ec0b7fee",
-};
+const config = fs.readFileSync(
+  path.resolve(__dirname, "./firebaseConfig.json"),
+  { encoding: "utf8" }
+);
 
 // Initialize Firebase
-initializeApp(firebaseConfig);
+initializeApp(JSON.parse(config));
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 
 const auth = getAuth();
