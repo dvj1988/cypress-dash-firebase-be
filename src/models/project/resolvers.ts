@@ -1,3 +1,4 @@
+import { API_TOKEN_HEADER_KEY } from "@/constants/request";
 import {
   BAD_REQUEST_STATUS_CODE,
   MSG_INVALID_CREATE_PROJECT_PAYLOAD,
@@ -253,7 +254,7 @@ export const addTestResults = async (
   res: ExpressResponse
 ) => {
   // Get API Key from Request
-  const apiToken = req.headers["api-token"] as string;
+  const apiToken = req.headers[API_TOKEN_HEADER_KEY] as string;
   const { projectRepository } = res.locals;
 
   if (!apiToken) {
@@ -303,11 +304,11 @@ export const addTestResults = async (
 
   // Create test result
   try {
-    const testResult = await projectRepository.createTestResult({
-      branch,
-      commitId,
-      result,
-    });
+    const testResult = await projectRepository.createTestResult(
+      project.id,
+      test.id,
+      { branch, commitId, result }
+    );
     return res.json(
       getSuccessResponse({
         test,

@@ -40,8 +40,8 @@ export type TestCreateType = {
 // Test Result Types
 
 export type TestResultFirebaseType = {
-  commitId: string;
-  branch: string;
+  testId: string;
+  projectId: string;
   result: any;
 } & MetadataType;
 

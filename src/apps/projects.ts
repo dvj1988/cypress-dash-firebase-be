@@ -6,6 +6,7 @@ import {
   getProjects,
   getTestResultOfTest,
   getTestsOfProject,
+  addTestResults,
 } from "@/models/project/resolvers";
 import { authMiddleware } from "@/middlewares/authMiddleware";
 import { responseLocals } from "@/repositories";
@@ -20,7 +21,7 @@ app.use((req, res, next) => {
 });
 
 // Add test result of a Test run
-app.post("/testResult", () => {});
+app.post("/testResult", addTestResults);
 
 app.use(authMiddleware);
 

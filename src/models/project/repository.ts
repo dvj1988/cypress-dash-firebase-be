@@ -110,7 +110,7 @@ export class ProjectRepository {
       );
   }
 
-  createTestOfProject(projectId: string, testObj: TestCreateType) {
+  async createTestOfProject(projectId: string, testObj: TestCreateType) {
     const createdAt = firestore.Timestamp.now();
     const newTest = {
       ...testObj,
@@ -118,6 +118,16 @@ export class ProjectRepository {
       updatedAt: createdAt,
       deletedAt: null,
     };
+
+    const exisitingTest = await this.getTestOfProjectById(
+      projectId,
+      testObj.commitId
+    );
+
+    if (exisitingTest) {
+      return exisitingTest;
+    }
+
     return this.db
       .collection(PROJECTS_COLLECTION_NAME)
       .doc(projectId)
@@ -141,7 +151,11 @@ export class ProjectRepository {
       .doc(testId)
       .get()
       .then((snapshot) => {
-        return { id: snapshot.id, ...snapshot.data() } as TestResponseType;
+        if (snapshot.exists) {
+          return { id: snapshot.id, ...snapshot.data() } as TestResponseType;
+        }
+
+        return null;
       });
   }
 
@@ -204,14 +218,21 @@ export class ProjectRepository {
       });
   }
 
-  createTestResult(testResultObj: TestResultCreateType) {
+  createTestResult(
+    projectId: string,
+    testId: string,
+    testResultObj: TestResultCreateType
+  ) {
     const createdAt = firestore.Timestamp.now();
     const newTestResult = {
-      ...testResultObj,
+      projectId,
+      testId,
+      result: testResultObj.result,
       createdAt,
       updatedAt: createdAt,
       deletedAt: null,
     };
+
     return this.db
       .collection(TEST_REPORT_COLLECTION_NAME)
       .add(newTestResult)
