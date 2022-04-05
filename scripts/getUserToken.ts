@@ -18,7 +18,7 @@ initializeApp(firebaseConfig);
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 
 const auth = getAuth();
-signInWithEmailAndPassword(auth, "diljitvj@gmail.com", "123456")
+signInWithEmailAndPassword(auth, "diljitvj@gmail.com", "***")
   .then(async (userCredential) => {
     // Signed in
     const token = await userCredential.user.getIdToken();
